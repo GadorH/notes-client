@@ -1,0 +1,12 @@
+.tox-tinymce {
+    margin-top: 5px;
+    border-radius: 0px !important;
+    border: 0px !important;
+    min-height: 100% !important;
+}
+
+@media (min-width: 767px) {
+    .tox-tinymce {
+        min-height: 100% !important;
+    }
+}
