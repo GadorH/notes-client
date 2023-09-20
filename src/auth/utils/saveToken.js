@@ -1,5 +1,5 @@
-import { TOKEN_LOCAL_STORAGE_KEY } from './constants';
+import { TOKEN_SESSION_STORAGE_KEY } from './constants';
 
 export const saveToken = (token) => {
-    localStorage.setItem(TOKEN_LOCAL_STORAGE_KEY, token);
+    sessionStorage.setItem(TOKEN_SESSION_STORAGE_KEY, token);
 };

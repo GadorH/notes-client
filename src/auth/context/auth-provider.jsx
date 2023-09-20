@@ -1,4 +1,6 @@
 import { createContext, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { signInService, signUpService } from '../services/auth-services.js';
 
 import { getToken } from '../utils/getToken';
@@ -9,6 +11,8 @@ export const AuthContext = createContext(null);
 
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
+    const navigate = useNavigate();
+
     const [authUser, setAuthUser] = useState(getToken);
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [authorizationError, setAuthorizationError] = useState(null);
@@ -45,6 +49,7 @@ export const AuthProvider = ({ children }) => {
             }
 
             setIsAuthenticated(true);
+            navigate('/notes');
         } catch (error) {
             console.error('AuthProvider::authLogin error:', error);
             setAuthorizationError(error.message);
@@ -78,7 +83,7 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => {
-    const context = useContext(AuthProvider);
+    const context = useContext(AuthContext);
 
     if (context === undefined) {
         throw new Error('useAuth must be used within an AuthProvider');

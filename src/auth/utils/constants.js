@@ -1,1 +1,1 @@
-export const TOKEN_LOCAL_STORAGE_KEY = 'authToken';
+export const TOKEN_SESSION_STORAGE_KEY = 'authToken';
