@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
@@ -12,6 +11,7 @@ export const LoginPage = () => {
     const { authLogin } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     return (
         <StyledLoginMain component={'main'}>
             <StyledForm

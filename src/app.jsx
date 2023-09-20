@@ -2,17 +2,17 @@ import { Route, Routes } from 'react-router-dom';
 
 import { Messages } from './shared/components/messages';
 import { ThemeProvider } from './shared/context/theme-provider';
+import { AuthProvider } from './auth/context/auth-provider';
 import { MessagesProvider } from './shared/context/messages-provider';
 import { NoteListPage } from './notes/pages/note-list-page';
 import { NoteEditionPage } from './notes/pages/note-edition-page';
 import { NoteSharedPage } from './notes/pages/note-shared-page';
 import { LoginPage } from './auth/pages/login-page';
-import { AuthProvider } from './auth/context/auth-provider';
 
 export const App = () => {
     return (
-        <ThemeProvider>
-            <AuthProvider>
+        <AuthProvider>
+            <ThemeProvider>
                 <MessagesProvider>
                     <Messages />
 
@@ -33,7 +33,7 @@ export const App = () => {
                         />
                     </Routes>
                 </MessagesProvider>
-            </AuthProvider>
-        </ThemeProvider>
+            </ThemeProvider>
+        </AuthProvider>
     );
 };
