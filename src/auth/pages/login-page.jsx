@@ -19,7 +19,7 @@ export const LoginPage = () => {
                 autoComplete="on"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    authLogin(email, Password);
+                    authLogin(email, password);
                 }}
             >
                 <TextField
@@ -42,7 +42,9 @@ export const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <Button variant="contained">Loguearse</Button>
+                <Button type="submit" variant="contained">
+                    Loguearse
+                </Button>
             </StyledForm>
         </StyledLoginMain>
     );
