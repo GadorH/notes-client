@@ -52,7 +52,7 @@ export const LoginPage = () => {
 
 const StyledLoginMain = styled(Container)`
     height: 100%;
-    display: flex;
+    display: flex;src
     justify-content: center;
     padding: 50px;
 `;
