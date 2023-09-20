@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import SaveNoteIcon from '@mui/icons-material/Save.js';
 import CloseIcon from '@mui/icons-material/Close.js';
 import Badge from '@mui/material/Badge';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { useQueryParams } from '../../shared/hooks/use-query-params.js';
 import { useMessageProvider } from '../../shared/context/messages-provider.jsx';
@@ -23,6 +24,7 @@ export const NoteEditionPage = () => {
 
     const [editorState, setEditorState] = useState({
         id: null,
+        loaded: false,
         hasChanges: false,
         canBeSaved: true,
         savedNote: null,
@@ -51,6 +53,10 @@ export const NoteEditionPage = () => {
 
     const bindEditorRef = (_, editor) => {
         editorRef.current = editor;
+        setEditorState({
+            ...editorState,
+            loaded: true,
+        });
     };
 
     const handleOnEditorChange = (content, editor) => {
@@ -126,7 +132,13 @@ export const NoteEditionPage = () => {
                 </Toolbar>
             </AppBar>
 
-            <StyledEditorContainer>
+            {!editorState.loaded && (
+                <StyledProgressContainer>
+                    <CircularProgress color="inherit" />
+                </StyledProgressContainer>
+            )}
+
+            <StyledEditorContainer loaded={editorState.loaded}>
                 <Editor
                     onInit={bindEditorRef}
                     onEditorChange={handleOnEditorChange}
@@ -144,6 +156,17 @@ const StyledSaveNoteButton = styled(IconButton)`
     margin-left: auto;
 `;
 
-const StyledEditorContainer = styled('main')`
-    height: calc(100% - 70px);
+const StyledEditorContainer = styled('main')(({ loaded }) => {
+    return {
+        opacity: loaded ? 1 : 0,
+        height: 'calc(100% - 70px)',
+    };
+});
+
+const StyledProgressContainer = styled('div')`
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 `;
