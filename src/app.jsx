@@ -8,6 +8,8 @@ import { NoteListPage } from './notes/pages/note-list-page';
 import { NoteEditionPage } from './notes/pages/note-edition-page';
 import { NoteSharedPage } from './notes/pages/note-shared-page';
 import { LoginPage } from './auth/pages/login-page';
+import { RegisterPage } from './auth/pages/register-page';
+
 
 export const App = () => {
     return (
@@ -17,6 +19,8 @@ export const App = () => {
                     <Messages />
 
                     <Routes>
+
+                        <Route path="/register" element={<RegisterPage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/notes" element={<NoteListPage />} />
                         <Route

@@ -52,6 +52,7 @@ export const LoginPage = () => {
 
 const StyledLoginMain = styled(Container)`
     height: 100%;
+    display: flex;src
     display: flex;
     justify-content: center;
     padding: 50px;
