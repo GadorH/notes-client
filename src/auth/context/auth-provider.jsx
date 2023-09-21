@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
             }
 
             await signUpService(email, password);
+            navigate('/notes');
         } catch (error) {
             console.error('AuthProvider::authRegister error:', error);
         } finally {
@@ -49,7 +50,6 @@ export const AuthProvider = ({ children }) => {
             }
 
             setIsAuthenticated(true);
-            navigate('/notes');
         } catch (error) {
             console.error('AuthProvider::authLogin error:', error);
             setAuthorizationError(error.message);
