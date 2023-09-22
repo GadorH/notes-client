@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
     const [authUser, setAuthUser] = useState(getToken);
     const [isAuthenticated, setIsAuthenticated] = useState(null);
-    const [authorizationError, setAuthorizationError] = useState(null);
+    const [authorizationError, setAuthorizationError] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const authRegister = async (email, password, repeatedPassword) => {
@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
             }
 
             await signUpService(email, password);
-            navigate('/notes');
         } catch (error) {
             console.error('AuthProvider::authRegister error:', error);
         } finally {
@@ -47,12 +46,14 @@ export const AuthProvider = ({ children }) => {
 
                 saveToken(accessTokenString);
                 setAuthUser(accessTokenObj);
+            } else {
+                throw new Error('Error al obtener el token');
             }
 
             setIsAuthenticated(true);
         } catch (error) {
             console.error('AuthProvider::authLogin error:', error);
-            setAuthorizationError(error.message);
+            setAuthorizationError(true);
         } finally {
             setLoading(false);
         }

@@ -1,6 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -8,10 +11,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import { useAuth } from '../context/auth-provider';
-import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
-    const { authLogin, loading } = useAuth();
+    const { authLogin, loading, authorizationError } = useAuth();
     const [email, setEmail] = useState({
         value: '',
         error: false,
@@ -72,7 +74,7 @@ export const LoginPage = () => {
                     onChange={handleOnEmailChange}
                     error={email.error}
                     helperText={
-                        email.error ? 'Introduce un email válido' : null
+                        email.error ? 'Formato de email inválido' : null
                     }
                 />
                 <TextField
@@ -80,9 +82,9 @@ export const LoginPage = () => {
                     name="password"
                     id="password"
                     label="Contraseña"
-                    type={password.isVisible ? 'text' : 'password'}
                     variant="standard"
                     placeholder="Contraseña"
+                    type={password.isVisible ? 'text' : 'password'}
                     value={password.value}
                     onChange={handleOnPasswordChange}
                     InputProps={{
@@ -111,6 +113,17 @@ export const LoginPage = () => {
                 <Button type="submit" variant="contained" disabled={loading}>
                     Loguearse
                 </Button>
+                {authorizationError && (
+                    <Snackbar autoHideDuration={2000}>
+                        <Alert
+                            autohideduration={2000}
+                            variant="filled"
+                            severity="error"
+                        >
+                            Email o contraseña inválidos
+                        </Alert>
+                    </Snackbar>
+                )}
             </StyledForm>
         </StyledLoginMain>
     );

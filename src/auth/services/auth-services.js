@@ -27,7 +27,7 @@ export const signInService = async (email, password) => {
             password,
         }),
     });
-    console.log(email, password);
+
     const body = await res.json();
 
     if (res.status === 401) {
