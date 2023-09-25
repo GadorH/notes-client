@@ -6,5 +6,5 @@ export const ProtectedRoute = (props) => {
     const { children } = props;
     const { authUser } = useAuth();
 
-    return authUser != null ? children : <Navigate to={'/'} />;
+    return authUser != null ? children : <Navigate to={'/login'} />;
 };

@@ -6,6 +6,7 @@ import {
     getAllNotesService,
     removeNoteService,
     uploadImageService,
+    getPublicNoteService,
 } from '../services/notes-services.js';
 
 const useNotes = () => {
@@ -24,6 +25,11 @@ const useNotes = () => {
         const note = await getNoteService(noteId);
         setNotes((prevNotes) => [...prevNotes, note]);
     };
+
+    const retrievePublic = async (noteId) => {
+        const note = await getPublicNoteService(noteId);
+        setNotes((prevNotes) => [...prevNotes, note]);
+    }
 
     const remove = async (noteId) => {
         await removeNoteService(noteId);
@@ -70,6 +76,7 @@ const useNotes = () => {
         actions: {
             create,
             retrieve,
+            retrievePublic,
             retrieveAll,
             remove,
             publish,

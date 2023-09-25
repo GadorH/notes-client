@@ -1,49 +1,129 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import styled from '@emotion/styled';
 import Container from '@mui/material/Container';
-import { Password } from '@mui/icons-material';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import { useAuth } from '../context/auth-provider';
-import { useState } from 'react';
+import { useMessageProvider } from '../../shared/context/messages-provider';
 
 export const LoginPage = () => {
-    const { authLogin } = useAuth();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { authLogin, loading, authorizationError, authUser } = useAuth();
+
+    const [email, setEmail] = useState({
+        value: '',
+        error: false,
+    });
+    const [password, setPassword] = useState({
+        value: '',
+        isVisible: false,
+    });
+
+    const navigate = useNavigate();
+    const {
+        actions: { addError },
+    } = useMessageProvider();
+
+    useEffect(() => {
+        if (authUser != null) {
+            navigate('/notes');
+        }
+    });
+
+    useEffect(() => {
+        if (authorizationError) {
+            addError('Email o contraseña inválidos');
+        }
+    }, [authorizationError]);
+
+    const handleOnSubmit = (e) => {
+        e.preventDefault();
+
+        const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!pattern.test(email.value)) {
+            return setEmail({
+                ...email,
+                error: true,
+            });
+        }
+
+        authLogin(email.value, password.value);
+    };
+    const handleOnEmailChange = (e) => {
+        setEmail({
+            ...email,
+            value: e.target.value,
+            error: false,
+        });
+    };
+    const handleOnPasswordChange = (e) => {
+        setPassword({
+            ...password,
+            value: e.target.value,
+        });
+    };
+
+    const handleTogglePasswordVisibility = () => {
+        setPassword((prevState) => {
+            const { isVisible } = prevState;
+            return { ...prevState, isVisible: !isVisible };
+        });
+    };
 
     return (
         <StyledLoginMain component={'main'}>
-            <StyledForm
-                noValidate
-                autoComplete="on"
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    authLogin(email, password);
-                }}
-            >
+            <StyledForm autoComplete="on" onSubmit={handleOnSubmit}>
                 <TextField
                     required
-                    id="standard-basic"
+                    name="email"
+                    id="email"
                     label="Email"
                     variant="standard"
                     placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={email.value}
+                    onChange={handleOnEmailChange}
+                    error={email.error}
+                    helperText={
+                        email.error ? 'Formato de email inválido' : null
+                    }
                 />
                 <TextField
                     required
-                    id="standard-basic"
+                    name="password"
+                    id="password"
                     label="Contraseña"
-                    type="password"
                     variant="standard"
                     placeholder="Contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    type={password.isVisible ? 'text' : 'password'}
+                    value={password.value}
+                    onChange={handleOnPasswordChange}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={handleTogglePasswordVisibility}
+                                >
+                                    {password.isVisible ? (
+                                        <Visibility />
+                                    ) : (
+                                        <VisibilityOff />
+                                    )}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                    inputProps={{
+                        minLength: 4,
+                        maxLength: 20,
+                    }}
                 />
 
-                <Button type="submit" variant="contained">
-                    Loguearse
+                <Button type="submit" variant="contained" disabled={loading}>
+                    Iniciar sesión
                 </Button>
             </StyledForm>
         </StyledLoginMain>
@@ -52,7 +132,6 @@ export const LoginPage = () => {
 
 const StyledLoginMain = styled(Container)`
     height: 100%;
-    display: flex;src
     display: flex;
     justify-content: center;
     padding: 50px;

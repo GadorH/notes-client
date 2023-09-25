@@ -13,6 +13,11 @@ export const signUpService = async (email, password) => {
     });
 
     const body = await res.json();
+
+    if (res.status !== 201) {
+        throw new Error(body.message);
+    }
+
     return body;
 };
 
@@ -30,7 +35,7 @@ export const signInService = async (email, password) => {
 
     const body = await res.json();
 
-    if (res.status === 401) {
+    if (res.status !== 200) {
         throw new Error(body.message);
     }
 

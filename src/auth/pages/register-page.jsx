@@ -1,66 +1,131 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import styled from '@emotion/styled';
 
-import { useState } from 'react';
+import { useMessageProvider } from '../../shared/context/messages-provider.jsx';
 import { useAuth } from '../context/auth-provider';
 
 export const RegisterPage = () => {
     const { authRegister } = useAuth();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [repeatedPassword, setRepeatedPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [showRepeatedPassword, setShowRepeatedPassword] = useState(false);
+    const {
+        actions: { addError },
+    } = useMessageProvider();
+    const [email, setEmail] = useState({
+        value: '',
+        error: false,
+    });
+    const [password, setPassword] = useState({
+        value: '',
+        isVisible: false,
+    });
+    const [repeatedPassword, setRepeatedPassword] = useState({
+        value: '',
+        isVisible: false,
+        error: false,
+    });
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleOnSubmit = async (e) => {
         e.preventDefault();
-        authRegister(email, password, repeatedPassword);
+
+        if (password.value !== repeatedPassword.value) {
+            return setRepeatedPassword({
+                ...repeatedPassword,
+                error: true,
+            });
+        }
+
+        try {
+            await authRegister(
+                email.value,
+                password.value,
+                repeatedPassword.value
+            );
+            navigate('/notes');
+        } catch (error) {
+            console.error('RegisterPage::handleOnSubmit error:', error);
+            addError('El usuario ya existe');
+        }
     };
 
-    const handleShowPasswordClick = () => {
-        setShowPassword(!showPassword);
+    const handleOnEmailChange = (e) => {
+        setEmail({
+            ...email,
+            value: e.target.value,
+            error: false,
+        });
     };
 
-    const handleShowRepeatedPasswordClick = () => {
-        setShowRepeatedPassword(!showRepeatedPassword);
+    const handleOnPasswordChange = (e) => {
+        setPassword({
+            ...password,
+            value: e.target.value,
+        });
+    };
+
+    const handleOnRepeatedPasswordChange = (e) => {
+        setRepeatedPassword({
+            ...repeatedPassword,
+            value: e.target.value,
+        });
+    };
+
+    const handleTogglePasswordVisibility = () => {
+        setPassword((prevState) => ({
+            ...prevState,
+            isVisible: !prevState.isVisible,
+        }));
+    };
+
+    const handleToggleRepeatedPasswordVisibility = () => {
+        setRepeatedPassword((prevState) => ({
+            ...prevState,
+            isVisible: !prevState.isVisible,
+        }));
     };
 
     return (
         <StyledRegisterMain component="main">
-            <StyledForm noValidate autoComplete="on" onSubmit={handleSubmit}>
+            <StyledForm autoComplete="on" onSubmit={handleOnSubmit}>
                 <TextField
                     required
-                    id="standard-basic"
+                    id="email"
                     label="Email"
+                    name="email"
                     type="email"
                     variant="standard"
                     placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={email.value}
+                    error={email.error}
+                    onChange={handleOnEmailChange}
+                    helperText={
+                        email.error ? 'Formato de email inválido' : null
+                    }
                 />
                 <TextField
                     required
-                    id="standard-adornment-password"
+                    name="password"
+                    id="password"
                     label="Contraseña"
-                    type={showPassword ? 'text' : 'password'}
                     variant="standard"
                     placeholder="Contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={password.value}
+                    type={password.isVisible ? 'text' : 'password'}
+                    onChange={handleOnPasswordChange}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
                                 <IconButton
-                                    onClick={handleShowPasswordClick}
-                                    edge="end"
-                                    aria-label="toggle password visibility"
+                                    onClick={handleTogglePasswordVisibility}
                                 >
-                                    {showPassword ? (
+                                    {password.isVisible ? (
                                         <Visibility />
                                     ) : (
                                         <VisibilityOff />
@@ -69,25 +134,36 @@ export const RegisterPage = () => {
                             </InputAdornment>
                         ),
                     }}
+                    inputProps={{
+                        minLength: 4,
+                        maxLength: 20,
+                    }}
                 />
                 <TextField
                     required
-                    id="standard-adornment-repeated-password"
+                    name="repeatedPassword"
+                    id="repeatedPassword"
                     label="Repite contraseña"
-                    type={showRepeatedPassword ? 'text' : 'password'}
                     variant="standard"
                     placeholder="Repite contraseña"
-                    value={repeatedPassword}
-                    onChange={(e) => setRepeatedPassword(e.target.value)}
+                    type={repeatedPassword.isVisible ? 'text' : 'password'}
+                    value={repeatedPassword.value}
+                    error={repeatedPassword.error}
+                    helperText={
+                        repeatedPassword.error
+                            ? 'Las contraseñas no coinciden'
+                            : null
+                    }
+                    onChange={handleOnRepeatedPasswordChange}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
                                 <IconButton
-                                    onClick={handleShowRepeatedPasswordClick}
-                                    edge="end"
-                                    aria-label="toggle repeated password visibility"
+                                    onClick={
+                                        handleToggleRepeatedPasswordVisibility
+                                    }
                                 >
-                                    {showRepeatedPassword ? (
+                                    {repeatedPassword.isVisible ? (
                                         <Visibility />
                                     ) : (
                                         <VisibilityOff />

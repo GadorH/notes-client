@@ -6,7 +6,9 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import AddCategoryIcon from '@mui/icons-material/CreateNewFolder';
+import LogoutIcon from '@mui/icons-material/Logout';
 
+import {useAuth} from "../../auth/context/auth-provider.jsx";
 import { useMessageProvider } from '../../shared/context/messages-provider.jsx';
 import useCategories from '../../categories/hooks/use-categories.js';
 import { NoteList } from '../components/note-list/note-list';
@@ -21,6 +23,8 @@ export const NoteListPage = () => {
     const appBarRef = useRef(null);
 
     const { actions: messageActions } = useMessageProvider();
+
+    const { authLogout } = useAuth();
 
     const { state: categoriesState, actions: categoriesActions } =
         useCategories();
@@ -184,10 +188,22 @@ export const NoteListPage = () => {
         }
     };
 
+    const handleLogout = () => {
+        authLogout();
+    }
+
     return (
         <>
             <AppBar ref={appBarRef} position="sticky">
                 <Toolbar>
+                    <StyledLogoutButton
+                        size="large"
+                        color="inherit"
+                        onClick={handleLogout}
+                    >
+                        <LogoutIcon />
+                    </StyledLogoutButton>
+
                     <StyledAddCategoryButton
                         size="large"
                         color="inherit"
@@ -269,4 +285,8 @@ const StyledNoteListContainer = styled(Container)((props) => ({
 
 const StyledAddCategoryButton = styled(IconButton)`
     margin-left: auto;
+`;
+
+const StyledLogoutButton = styled(IconButton)`
+    margin-right: auto;
 `;

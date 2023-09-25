@@ -9,7 +9,7 @@ import { NoteEditionPage } from './notes/pages/note-edition-page';
 import { NoteSharedPage } from './notes/pages/note-shared-page';
 import { LoginPage } from './auth/pages/login-page';
 import { RegisterPage } from './auth/pages/register-page';
-
+import { ProtectedRoute } from './auth/components/protected-route';
 
 export const App = () => {
     return (
@@ -19,17 +19,31 @@ export const App = () => {
                     <Messages />
 
                     <Routes>
-
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/login" element={<LoginPage />} />
-                        <Route path="/notes" element={<NoteListPage />} />
+                        <Route
+                            path="/notes"
+                            element={
+                                <ProtectedRoute>
+                                    <NoteListPage />
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route
                             path="/notes/new"
-                            element={<NoteEditionPage />}
+                            element={
+                                <ProtectedRoute>
+                                    <NoteEditionPage />
+                                </ProtectedRoute>
+                            }
                         />
                         <Route
                             path="/notes/edit"
-                            element={<NoteEditionPage />}
+                            element={
+                                <ProtectedRoute>
+                                    <NoteEditionPage />
+                                </ProtectedRoute>
+                            }
                         />
                         <Route
                             path="/notes/share/:noteId"

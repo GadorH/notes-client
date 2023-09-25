@@ -30,7 +30,7 @@ export const createCategoryService = async (payload) => {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload.toLowerCase()),
     });
 
     const body = await res.json();
