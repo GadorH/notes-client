@@ -24,12 +24,12 @@ export const AuthProvider = ({ children }) => {
 
             const accessTokenObj = await signUpService(email, password);
             const accessTokenString = accessTokenObj.accessToken;
-            console.log(accessTokenObj, accessTokenString);
 
             saveToken(accessTokenString);
             setAuthUser(accessTokenObj);
         } catch (error) {
             console.error('AuthProvider::authRegister error:', error);
+            throw error;
         } finally {
             setLoading(false);
         }

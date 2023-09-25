@@ -1,17 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
 
+import { useMessageProvider } from '../../shared/context/messages-provider.jsx';
 import { useAuth } from '../context/auth-provider';
 
 export const RegisterPage = () => {
     const { authRegister } = useAuth();
+    const {
+        actions: { addError },
+    } = useMessageProvider();
     const [email, setEmail] = useState({
         value: '',
         error: false,
@@ -38,8 +42,17 @@ export const RegisterPage = () => {
             });
         }
 
-        await authRegister(email.value, password.value, repeatedPassword.value);
-        navigate('/notes');
+        try {
+            await authRegister(
+                email.value,
+                password.value,
+                repeatedPassword.value
+            );
+            navigate('/notes');
+        } catch (error) {
+            console.error('RegisterPage::handleOnSubmit error:', error);
+            addError('El usuario ya existe');
+        }
     };
 
     const handleOnEmailChange = (e) => {
@@ -111,8 +124,6 @@ export const RegisterPage = () => {
                             <InputAdornment position="end">
                                 <IconButton
                                     onClick={handleTogglePasswordVisibility}
-                                    edge="end"
-                                    aria-label="toggle password visibility"
                                 >
                                     {password.isVisible ? (
                                         <Visibility />
@@ -151,8 +162,6 @@ export const RegisterPage = () => {
                                     onClick={
                                         handleToggleRepeatedPasswordVisibility
                                     }
-                                    edge="end"
-                                    aria-label="toggle repeated password visibility"
                                 >
                                     {repeatedPassword.isVisible ? (
                                         <Visibility />

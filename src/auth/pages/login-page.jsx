@@ -106,8 +106,6 @@ export const LoginPage = () => {
                             <InputAdornment position="end">
                                 <IconButton
                                     onClick={handleTogglePasswordVisibility}
-                                    edge="end"
-                                    aria-label="toggle password visibility"
                                 >
                                     {password.isVisible ? (
                                         <Visibility />
@@ -125,7 +123,7 @@ export const LoginPage = () => {
                 />
 
                 <Button type="submit" variant="contained" disabled={loading}>
-                    Loguearse
+                    Iniciar sesión
                 </Button>
             </StyledForm>
         </StyledLoginMain>
@@ -134,7 +132,6 @@ export const LoginPage = () => {
 
 const StyledLoginMain = styled(Container)`
     height: 100%;
-    display: flex;src
     display: flex;
     justify-content: center;
     padding: 50px;

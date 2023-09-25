@@ -9,7 +9,7 @@ export const NoteSharedPage = () => {
     const { state: notesState, actions: notesActions } = useNotes();
 
     useEffect(() => {
-        notesActions.retrieve(noteId);
+        notesActions.retrievePublic(noteId);
     }, [noteId]);
 
     const [note] = notesState.notes;
