@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
-import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import { useAuth } from '../context/auth-provider';
+import { useMessageProvider } from '../../shared/context/messages-provider';
 
 export const LoginPage = () => {
-    const { authLogin, loading, authorizationError } = useAuth();
+    const { authLogin, loading, authorizationError, authUser } = useAuth();
+
     const [email, setEmail] = useState({
         value: '',
         error: false,
@@ -24,6 +24,21 @@ export const LoginPage = () => {
     });
 
     const navigate = useNavigate();
+    const {
+        actions: { addError },
+    } = useMessageProvider();
+
+    useEffect(() => {
+        if (authUser != null) {
+            navigate('/notes');
+        }
+    });
+
+    useEffect(() => {
+        if (authorizationError) {
+            addError('Email o contraseña inválidos');
+        }
+    }, [authorizationError]);
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
@@ -37,7 +52,6 @@ export const LoginPage = () => {
         }
 
         authLogin(email.value, password.value);
-        //navigate('/notes');
     };
     const handleOnEmailChange = (e) => {
         setEmail({
@@ -113,17 +127,6 @@ export const LoginPage = () => {
                 <Button type="submit" variant="contained" disabled={loading}>
                     Loguearse
                 </Button>
-                {authorizationError && (
-                    <Snackbar autoHideDuration={2000}>
-                        <Alert
-                            autohideduration={2000}
-                            variant="filled"
-                            severity="error"
-                        >
-                            Email o contraseña inválidos
-                        </Alert>
-                    </Snackbar>
-                )}
             </StyledForm>
         </StyledLoginMain>
     );
