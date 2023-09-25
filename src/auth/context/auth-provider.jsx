@@ -15,13 +15,19 @@ export const AuthProvider = ({ children }) => {
 
     const authRegister = async (email, password, repeatedPassword) => {
         try {
+            removeToken();
             setLoading(true);
 
             if (password !== repeatedPassword) {
                 throw new Error('Las contraseñas no coinciden');
             }
 
-            await signUpService(email, password);
+            const accessTokenObj = await signUpService(email, password);
+            const accessTokenString = accessTokenObj.accessToken;
+            console.log(accessTokenObj, accessTokenString);
+
+            saveToken(accessTokenString);
+            setAuthUser(accessTokenObj);
         } catch (error) {
             console.error('AuthProvider::authRegister error:', error);
         } finally {
@@ -31,16 +37,16 @@ export const AuthProvider = ({ children }) => {
 
     const authLogin = async (email, password) => {
         try {
+            removeToken();
             setLoading(true);
             setAuthorizationError(false);
 
             const accessTokenObj = await signInService(email, password);
-            const accessTokenString = accessTokenObj.accessToken.toString();
+            const accessTokenString = accessTokenObj.accessToken;
 
             saveToken(accessTokenString);
             setAuthUser(accessTokenObj);
         } catch (error) {
-            removeToken();
             setAuthorizationError(true);
         } finally {
             setLoading(false);

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -25,9 +26,20 @@ export const RegisterPage = () => {
         error: false,
     });
 
-    const handleOnSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleOnSubmit = async (e) => {
         e.preventDefault();
-        authRegister(email.value, password.value, repeatedPassword.value);
+
+        if (password.value !== repeatedPassword.value) {
+            return setRepeatedPassword({
+                ...repeatedPassword,
+                error: true,
+            });
+        }
+
+        await authRegister(email.value, password.value, repeatedPassword.value);
+        navigate('/notes');
     };
 
     const handleOnEmailChange = (e) => {
@@ -126,6 +138,11 @@ export const RegisterPage = () => {
                     type={repeatedPassword.isVisible ? 'text' : 'password'}
                     value={repeatedPassword.value}
                     error={repeatedPassword.error}
+                    helperText={
+                        repeatedPassword.error
+                            ? 'Las contraseñas no coinciden'
+                            : null
+                    }
                     onChange={handleOnRepeatedPasswordChange}
                     InputProps={{
                         endAdornment: (

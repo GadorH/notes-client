@@ -13,6 +13,11 @@ export const signUpService = async (email, password) => {
     });
 
     const body = await res.json();
+
+    if (res.status !== 201) {
+        throw new Error(body.message);
+    }
+
     return body;
 };
 
