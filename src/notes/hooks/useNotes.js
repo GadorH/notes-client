@@ -29,7 +29,7 @@ const useNotes = () => {
     const retrievePublic = async (noteId) => {
         const note = await getPublicNoteService(noteId);
         setNotes((prevNotes) => [...prevNotes, note]);
-    }
+    };
 
     const remove = async (noteId) => {
         await removeNoteService(noteId);
@@ -66,7 +66,7 @@ const useNotes = () => {
     };
 
     const sharePublic = (noteId) => {
-        return `${window.location.origin}/notes/share/${noteId}`;
+        return `${window.location.origin}/#/notes/share/${noteId}`;
     };
 
     return {
