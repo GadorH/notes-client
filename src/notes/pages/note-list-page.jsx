@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import AddCategoryIcon from '@mui/icons-material/CreateNewFolder';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import {useAuth} from "../../auth/context/auth-provider.jsx";
+import { useAuth } from '../../auth/context/auth-provider.jsx';
 import { useMessageProvider } from '../../shared/context/messages-provider.jsx';
 import useCategories from '../../categories/hooks/use-categories.js';
 import { NoteList } from '../components/note-list/note-list';
@@ -190,7 +190,7 @@ export const NoteListPage = () => {
 
     const handleLogout = () => {
         authLogout();
-    }
+    };
 
     return (
         <>
