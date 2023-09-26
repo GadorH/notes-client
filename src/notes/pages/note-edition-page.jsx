@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -112,7 +113,12 @@ export const NoteEditionPage = () => {
         <>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton size="large" color="inherit" href={'/notes'}>
+                    <IconButton
+                        size="large"
+                        color="inherit"
+                        component={Link}
+                        to={'/notes'}
+                    >
                         <CloseIcon />
                     </IconButton>
                     <StyledSaveNoteButton

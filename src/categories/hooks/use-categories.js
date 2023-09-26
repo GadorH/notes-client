@@ -17,7 +17,7 @@ const useCategories = () => {
 
     const create = async (categoryName) => {
         const category = await createCategoryService({
-            name: categoryName,
+            name: categoryName.toLowerCase(),
         });
         setCategories([...categories, category]);
     };

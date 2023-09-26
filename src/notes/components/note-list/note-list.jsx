@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -153,7 +154,8 @@ export const NoteList = (props) => {
                                             )}
                                         </ListItemIcon>
                                         <ListItemButton
-                                            href={`/notes/edit?category=${category.id}&note=${note.id}`}
+                                            component={Link}
+                                            to={`/notes/edit?category=${category.id}&note=${note.id}`}
                                         >
                                             <StyleListItemText
                                                 primary={note.title}
