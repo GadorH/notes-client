@@ -56,7 +56,6 @@ export const MessagesProvider = ({ children }) => {
     }, [messages]);
 
     return (
-
         <MessagesContext.Provider value={contextValue}>
             {children}
         </MessagesContext.Provider>
