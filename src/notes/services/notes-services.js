@@ -1,4 +1,5 @@
 const baseURL = import.meta.env.VITE_API_URL;
+const basePATH = import.meta.env.VITE_BASE_PATH;
 
 import { getToken } from '../../auth/utils/getToken';
 
@@ -82,7 +83,6 @@ export const getNoteService = async (noteId) => {
 
 export const removeNoteService = async (noteId) => {
     const token = getToken();
-
     const res = await fetch(`${baseURL}/notes/${noteId}`, {
         method: 'delete',
         headers: {
@@ -97,6 +97,10 @@ export const removeNoteService = async (noteId) => {
     }
 
     return body;
+};
+
+export const composeGetPublicNoteURL = (noteId) => {
+    return `${window.location.origin}${basePATH}/#/notes/share/${noteId}`;
 };
 
 export const getPublicNoteService = async (noteId) => {

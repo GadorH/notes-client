@@ -35,6 +35,7 @@ jobs:
               run: |
                   echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
                   echo "VITE_TINY_MCE_API_KEY=${{ secrets.VITE_TINY_MCE_API_KEY }}" >> .env
+                  echo "VITE_BASE_PATH=/notes-client/" >> .env
 
             - name: Build Project
               run: npm run build

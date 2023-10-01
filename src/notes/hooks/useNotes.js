@@ -7,6 +7,7 @@ import {
     removeNoteService,
     uploadImageService,
     getPublicNoteService,
+    composeGetPublicNoteURL,
 } from '../services/notes-services.js';
 
 const useNotes = () => {
@@ -66,7 +67,7 @@ const useNotes = () => {
     };
 
     const sharePublic = (noteId) => {
-        return `${window.location.origin}/#/notes/share/${noteId}`;
+        return composeGetPublicNoteURL(noteId);
     };
 
     return {

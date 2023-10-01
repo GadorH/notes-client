@@ -232,5 +232,5 @@ const StyledListSubheader = styled(ListSubheader)((props) => ({
 }));
 
 const StyleListItemText = styled(ListItemText)`
-    white-space: nowrap;
+    white-space: normal;
 `;
