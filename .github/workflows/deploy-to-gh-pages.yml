@@ -1,0 +1,52 @@
+name: deploy-to-gh-pages
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+        inputs:
+            branch:
+                description: 'Branch to build and deploy'
+                required: true
+                default: main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout / Branch Head
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.CI_PAT }}
+                  ref: ${{ github.event.inputs.branch }}
+
+            - name: Setup Node environment
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Creating .env file for production
+              run: |
+                  echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+                  echo "VITE_TINY_MCE_API_KEY=${{ secrets.VITE_TINY_MCE_API_KEY }}" >> .env
+
+            - name: Build Project
+              run: npm run build
+
+            - name: Deploy to GitHub Pages
+              run: |
+                  git config --global user.email "username@users.noreply.github.com"
+                  git config --global user.name "Github Actions Bot"
+                  mv dist/ /tmp/dist 
+                  git checkout gh-pages
+                  rm -rf node_modules assets/ index.html logo.png .env
+                  mv /tmp/dist/* .
+                  git add .
+                  git commit -m "Deploy to GitHub Pages"
+                  git push https://${{secrets.CI_PAT}}@github.com/GadorH/notes-client.git gh-pages
