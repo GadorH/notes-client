@@ -2,12 +2,13 @@
 
 ## 📜🖋️ Sumario
 
-La Aplicación de Notas es una herramienta que te permite gestionar tus notas personales de manera eficiente. Utiliza la API de notes que permite a los usuarios tanto anónimos como registrados llevar un control completo de sus notas.
+La Aplicación de Notas es una herramienta que te permite gestionar tus notas personales de manera eficiente. Utiliza la API de notes que permite a los usuarios registrados llevar un control completo de sus notas y, si estos lo desean, compartir de manera pública las notas que deseen.
 
 ### Características clave:
 
 **Registro y Autenticación:** Los usuarios pueden registrarse y autenticarse para acceder a sus notas de manera segura.
-**Creación de Notas:** Crea nuevas notas fácilmente, asignándoles un título y contenido. **Inserción de Imágenes:** Añade imágenes a tus notas para enriquecer tu contenido y mejorar la expresión visual.
+**Creación de Notas:** Crea nuevas notas fácilmente, asignándoles un título y contenido.
+**Inserción de Imágenes:** Añade imágenes a tus notas para enriquecer tu contenido y mejorar la expresión visual.
 **Edición y Actualización:** Modifica tus notas existentes en cualquier momento, para mantener la información actualizada.
 **Eliminación de Notas:** Elimina notas que ya no necesitas.
 **Organización**: Crea, modifica o borra categorías para organizar tus notas de acuerdo a tus necesidades.
@@ -25,7 +26,7 @@ La documentación de este proyecto la podras encontrar en el siguiente enlace:ht
 
 3.**Material-UI:** La aplicación utiliza Material-UI para la gestión de estilos y componentes visuales. Esto garantiza una interfaz de usuario atractiva y coherente en toda la aplicación.
 
-4.**TinyMCE:** Para enriquecer la experiencia de creación de notas, hemos incorporado TinyMCE, un editor de texto enriquecido que proporciona un cuadro de herramientas completo para formatear y editar el contenido de las notas, incluyendo la inserción de imágenes y otros elementos multimedia.
+4.**TinyMCE:** Para enriquecer la experiencia de creación de notas, hemos incorporado TinyMCE, un editor de texto enriquecido que proporciona un cuadro de herramientas completo para formatear y editar el contenido de las notas, incluyendo la inserción de imágenes.
 
 Estas tecnologías se combinan para ofrecer una aplicación con una interfaz atractiva y capacidades de edición avanzadas.
 
@@ -44,7 +45,7 @@ Para comenzar a utilizar la aplicación de Notas, necesitarás descargar dos rep
 `cd notes-client`
 `npm install`
 
-3.**Configurar variables de entorno:** La aplicación utiliza variables de entorno para configurar ciertos aspectos, como la conexión a la base de datos y la configuración de seguridad. En cada repositorio, encontrarás un archivo .env.example que puedes copiar y renombrar a `.env`
+3.**Configurar variables de entorno:** La aplicación utiliza variables de entorno para configurar ciertos aspectos, como la conexión a la base de datos y la configuración de seguridad. En cada repositorio, encontrarás un archivo .env.example que puedes copiar y renombrar a `.env` o `.env.local` en cada caso. Dentro de las variables de entorno se te requerirá el uso de una API KEY para que el editor de texto funcione correctamente, puedes obtener la misma registrándote en la página de TinyMCE (https://www.tiny.cloud/) y copiando dicha API KEY en el archivo `.env.local`
 
 4.**Iniciar los Servidores:**
 Una vez configuradas las variables de entorno, puedes iniciar los servidores para el backend y el frontend.
